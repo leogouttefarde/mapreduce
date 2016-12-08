@@ -14,7 +14,7 @@ import org.apache.hadoop.util.GenericOptionsParser;
 
 import java.io.IOException;
 
-public class Question1_1 {
+public class Question1_4 {
 
 	// type clé input, type valeur input, type clé output, type valeur output
 	public static class WordCountMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
@@ -38,19 +38,17 @@ public class Question1_1 {
 		}
 	}
 
-//	public static class MyMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
-//		@Override
-//		protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-//
-//		}
-//	}
-//
-//	public static class MyReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
-//		@Override
-//		protected void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-//
-//		}
-//	}
+	// type clé input, type valeur input, type clé output, type valeur output
+	public static class WordCountCombiner extends Reducer<Text, IntWritable, Text, LongWritable> {
+		@Override
+		protected void reduce(Text key, Iterable<LongWritable> values, Context context) throws IOException, InterruptedException {
+			long sum = 0;
+			for (LongWritable value : values) {
+				sum += value.get();
+			}
+			context.write(key, new LongWritable(sum));
+		}
+	}
 
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();
@@ -74,8 +72,8 @@ public class Question1_1 {
             input = otherArgs[0];
         }
 		
-		Job job = Job.getInstance(conf, "Question1_1");
-		job.setJarByClass(Question1_1.class);
+		Job job = Job.getInstance(conf, "Question1_4");
+		job.setJarByClass(Question1_4.class);
 		
 		job.setMapperClass(WordCountMapper.class);
 		job.setMapOutputKeyClass(Text.class);
@@ -84,6 +82,9 @@ public class Question1_1 {
 		job.setReducerClass(WordCountReducer.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(IntWritable.class);
+
+        job.setCombinerClass(WordCountCombiner.class);
+        job.setNumReduceTasks(3);
 
 		FileInputFormat.addInputPath(job, new Path(input));
 		job.setInputFormatClass(TextInputFormat.class);
