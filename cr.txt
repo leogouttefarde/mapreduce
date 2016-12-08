@@ -1,0 +1,27 @@
+
+1.1
+
+1. Que signifie Map input records ? Et Map output records ?
+Map input records = nb de lignes du fichier d'entrée à traiter
+Map output records = nb de mots du fichier d'entrée
+
+2. Quel est le lien entre Map output records et Reduce input records ?
+Reduce input records correspond au nombre de mots à fournis à l'étape reduce
+Ainsi il correspond au nombre de mots (Map output records) moins le nombre de mots retirés lors de l'étape combine
+
+3. Que signifie Reduce input groups ?
+Reduce input groups correspond au nombre de mots différents présents à l'étape reduce
+
+
+
+1.2
+Question : quel est le chemin, dans HDFS, vers votre répertoire personel ?
+
+=> C'est /user/lgout
+
+
+1.3
+
+
+
+
