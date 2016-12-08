@@ -39,14 +39,14 @@ public class Question1_4 {
 	}
 
 	// type clé input, type valeur input, type clé output, type valeur output
-	public static class WordCountCombiner extends Reducer<Text, IntWritable, Text, LongWritable> {
+	public static class WordCountCombiner extends Reducer<Text, IntWritable, Text, IntWritable> {
 		@Override
-		protected void reduce(Text key, Iterable<LongWritable> values, Context context) throws IOException, InterruptedException {
-			long sum = 0;
-			for (LongWritable value : values) {
+		protected void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
+			int sum = 0;
+			for (IntWritable value : values) {
 				sum += value.get();
 			}
-			context.write(key, new LongWritable(sum));
+			context.write(key, new IntWritable(sum));
 		}
 	}
 
