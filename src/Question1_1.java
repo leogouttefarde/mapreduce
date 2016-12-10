@@ -34,6 +34,7 @@ public class Question1_1 {
 			for (IntWritable value : values) {
 				sum += value.get();
 			}
+			//System.out.println("reduce de " + key);
 			context.write(key, new LongWritable(sum));
 		}
 	}
@@ -60,10 +61,10 @@ public class Question1_1 {
 		String output;
 
 		if (otherArgs.length < 2) {
-			output = "sortie";
+			output = "output";
 
 			if (otherArgs.length < 1) {
-				input = "texte.txt";
+				input = "input";
 			}
             else {
                 input = otherArgs[0];

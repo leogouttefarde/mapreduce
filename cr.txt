@@ -22,6 +22,44 @@ Question : quel est le chemin, dans HDFS, vers votre répertoire personel ?
 
 1.3
 
+Le nombre de "splits" lus sur HDFS est 5. Ce compteur correspond au nombre de de fichiers d'entrée.
+
+
+1.4
+
+1)
+
+Il n'y a aucune différence entre les deux répertoires de résultats.
+C'est normal car un combiner est un mini-reducer placé à la sortie du map et qui permet de réduire le nombre de couples sans affecter le résultat.
+En effet la correction du programme ne doit pas en dépendre.
+
+2)
+Les valeurs "Combine input records" et "Combine output records" permettent de vérifier que le combiner a bien fonctionné car elles indiquent le nombre de valeurs traitées par le combiner.
+De plus on observe que la valeur de "Reduce input records" a bien été réduite avec le combiner.
+
+3)
+La différence entre "Combine input records" et "Combine output records" correspond au nombre de valeurs qu'il a été possible de retirer en les traiant avec le combiner (et donc au gain obtenu).
+En effet on peut facilement vérifier que cette différence est égale à la différence entre les valeurs "Reduce input records" avec et sans combiner.
+
+Sans combiner
+Reduce input records=421739
+
+
+Avec combiner
+
+Combine input records=421739
+Combine output records=85301
+Reduce input records=85301
+
+On voit bien que "Reduce input records" sans combiner est égal à "Combine input records" avec combiner.
+Avec le combiner, "Reduce input records" est égal à "Combine output records" et donc la différence précisée précédemment est bien égale (différence de 336438).
+
+
+Mot le plus fréquent dans "Les misérables"
+Le mot le plus utilisé dans "Les misérables" est 'de' qui est utilisé 16757 fois.
+
+
+
 
 
 
