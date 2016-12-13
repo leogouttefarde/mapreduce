@@ -1,11 +1,13 @@
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
+import org.apache.hadoop.io.WritableComparable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
 public class StringAndInt implements Comparable<StringAndInt>, Writable {
+//public class StringAndInt implements WritableComparable {
 
 	private String tag;
 	private int count;
@@ -52,4 +54,9 @@ public class StringAndInt implements Comparable<StringAndInt>, Writable {
 		tag = text.toString();
 		count = dataInput.readInt();
 	}
+
+//	@Override
+//	public int compareTo(Object o) {
+//		return 0;
+//	}
 }
