@@ -47,8 +47,8 @@ public class Question2_2 {
 					case 8:
 						uTags = java.net.URLDecoder.decode(field, "UTF-8");
 						tags.addAll(Arrays.asList(uTags.toString().split(",")));
-                        //if (uTags.length()>1)
-                        //    System.out.println("user tags : "+uTags);
+						//if (uTags.length()>1)
+						//    System.out.println("user tags : "+uTags);
 						break;
 
 					// Machine tags
@@ -57,8 +57,8 @@ public class Question2_2 {
 
 						// Machine tags will not be considered here
 						//tags.addAll(Arrays.asList(mTags.toString().split(",")));
-                        //if (mTags.length()>1)
-                        //    System.out.println("machine tags : "+mTags);
+						//if (mTags.length()>1)
+						//    System.out.println("machine tags : "+mTags);
 						break;
 
 					// Longitude
@@ -77,13 +77,13 @@ public class Question2_2 {
 
 			if (country != null) {
 				for (String tag : tags) {
-				    if (tag.length() > 0) {
-                        context.write(
-                                new Text(country.toString()),
-                                new StringAndInt(tag, 1)
-                        );
-				    }
-                }
+					if (tag.length() > 0) {
+						context.write(
+								new Text(country.toString()),
+								new StringAndInt(tag, 1)
+						);
+					}
+				}
 			}
 		}
 	}
@@ -171,18 +171,18 @@ public class Question2_2 {
 			if (otherArgs.length < 1) {
 				input = "input";
 			}
-            else {
-                input = otherArgs[0];
-            }
+			else {
+				input = otherArgs[0];
+			}
 		}
-        else {
-            output = otherArgs[1];
-            input = otherArgs[0];
+		else {
+			output = otherArgs[1];
+			input = otherArgs[0];
 
 			if (otherArgs.length >= 3) {
 				conf.set("K", otherArgs[2]);
 			}
-        }
+		}
 
 		Job job = Job.getInstance(conf, "Question2_1");
 		job.setJarByClass(Question2_2.class);
@@ -195,8 +195,8 @@ public class Question2_2 {
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(MinMaxPriorityQueue.class);
 
-        job.setCombinerClass(MyCombiner.class);
-        job.setNumReduceTasks(3);
+		job.setCombinerClass(MyCombiner.class);
+		job.setNumReduceTasks(3);
 
 		FileInputFormat.addInputPath(job, new Path(input));
 		job.setInputFormatClass(TextInputFormat.class);

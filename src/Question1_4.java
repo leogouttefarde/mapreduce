@@ -64,14 +64,14 @@ public class Question1_4 {
 			if (otherArgs.length < 1) {
 				input = "input";
 			}
-            else {
-                input = otherArgs[0];
-            }
+			else {
+				input = otherArgs[0];
+			}
 		}
-        else {
-            output = otherArgs[1];
-            input = otherArgs[0];
-        }
+		else {
+			output = otherArgs[1];
+			input = otherArgs[0];
+		}
 		
 		Job job = Job.getInstance(conf, "Question1_4");
 		job.setJarByClass(Question1_4.class);
@@ -84,8 +84,8 @@ public class Question1_4 {
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(IntWritable.class);
 
-        job.setCombinerClass(WordCountCombiner.class);
-        job.setNumReduceTasks(3);
+		job.setCombinerClass(WordCountCombiner.class);
+		job.setNumReduceTasks(3);
 
 		FileInputFormat.addInputPath(job, new Path(input));
 		job.setInputFormatClass(TextInputFormat.class);

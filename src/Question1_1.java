@@ -39,20 +39,6 @@ public class Question1_1 {
 		}
 	}
 
-//	public static class MyMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
-//		@Override
-//		protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-//
-//		}
-//	}
-//
-//	public static class MyReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
-//		@Override
-//		protected void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-//
-//		}
-//	}
-
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();
 		String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
@@ -66,14 +52,14 @@ public class Question1_1 {
 			if (otherArgs.length < 1) {
 				input = "input";
 			}
-            else {
-                input = otherArgs[0];
-            }
+			else {
+				input = otherArgs[0];
+			}
 		}
-        else {
-            output = otherArgs[1];
-            input = otherArgs[0];
-        }
+		else {
+			output = otherArgs[1];
+			input = otherArgs[0];
+		}
 		
 		Job job = Job.getInstance(conf, "Question1_1");
 		job.setJarByClass(Question1_1.class);

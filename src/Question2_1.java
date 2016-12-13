@@ -33,7 +33,7 @@ public class Question2_1 {
 			double latitude = 0, longitude = 0;
 			String uTags = null, mTags = null;
 			String[] fields = value.toString().split("\\t");
-            LinkedList<String> tags = new LinkedList<>();
+			LinkedList<String> tags = new LinkedList<>();
 
 			// Discard invalid inputs
 			if (fields.length < 11) {
@@ -48,7 +48,7 @@ public class Question2_1 {
 					// User tags
 					case 8:
 						uTags = java.net.URLDecoder.decode(field, "UTF-8");
-                        tags.addAll(Arrays.asList(uTags.toString().split(",")));
+						tags.addAll(Arrays.asList(uTags.toString().split(",")));
 						break;
 
 					// Machine tags
@@ -75,16 +75,16 @@ public class Question2_1 {
 
 			Country country = Country.getCountryAt(latitude, longitude);
 
-            if (country != null) {
-                for (String tag : tags) {
-                    if (tag.length() > 0) {
-                        context.write(
-                                new Text(country.toString()),
-                                new Text(tag)
-                        );
-                    }
-                }
-            }
+			if (country != null) {
+				for (String tag : tags) {
+					if (tag.length() > 0) {
+						context.write(
+								new Text(country.toString()),
+								new Text(tag)
+						);
+					}
+				}
+			}
 		}
 	}
 
@@ -96,18 +96,18 @@ public class Question2_1 {
 			HashMap<String, Integer> tagsMap = new HashMap<>();
 
 			for (Text value : values) {
-			    String tag = value.toString();
+				String tag = value.toString();
 
-                if (tag.length() > 0) {
-                    Integer oCount = tagsMap.get(tag);
-                    int count = 1;
+				if (tag.length() > 0) {
+					Integer oCount = tagsMap.get(tag);
+					int count = 1;
 
-                    if (oCount != null) {
-                        count += oCount.intValue();
-                    }
+					if (oCount != null) {
+						count += oCount.intValue();
+					}
 
-                    tagsMap.put(tag, count);
-                }
+					tagsMap.put(tag, count);
+				}
 			}
 
 			Configuration config = context.getConfiguration();
@@ -139,18 +139,18 @@ public class Question2_1 {
 			if (otherArgs.length < 1) {
 				input = "input";
 			}
-            else {
-                input = otherArgs[0];
-            }
+			else {
+				input = otherArgs[0];
+			}
 		}
-        else {
-            output = otherArgs[1];
-            input = otherArgs[0];
+		else {
+			output = otherArgs[1];
+			input = otherArgs[0];
 
 			if (otherArgs.length >= 3) {
 				conf.set("K", otherArgs[2]);
 			}
-        }
+		}
 
 		Job job = Job.getInstance(conf, "Question2_1");
 		job.setJarByClass(Question2_1.class);
