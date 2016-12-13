@@ -26,7 +26,8 @@ public class Question2_2 {
 	public static class MyMapper extends Mapper<LongWritable, Text, Text, StringAndInt> {
 
 		@Override
-		protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+		protected void map(LongWritable key, Text value, Context context)
+				throws IOException, InterruptedException {
 
 			double latitude = 0, longitude = 0;
 			String uTags, mTags;
@@ -47,8 +48,6 @@ public class Question2_2 {
 					case 8:
 						uTags = java.net.URLDecoder.decode(field, "UTF-8");
 						tags.addAll(Arrays.asList(uTags.toString().split(",")));
-						//if (uTags.length()>1)
-						//    System.out.println("user tags : "+uTags);
 						break;
 
 					// Machine tags
@@ -57,8 +56,6 @@ public class Question2_2 {
 
 						// Machine tags will not be considered here
 						//tags.addAll(Arrays.asList(mTags.toString().split(",")));
-						//if (mTags.length()>1)
-						//    System.out.println("machine tags : "+mTags);
 						break;
 
 					// Longitude
@@ -79,8 +76,8 @@ public class Question2_2 {
 				for (String tag : tags) {
 					if (tag.length() > 0) {
 						context.write(
-								new Text(country.toString()),
-								new StringAndInt(tag, 1)
+							new Text(country.toString()),
+							new StringAndInt(tag.trim(), 1)
 						);
 					}
 				}
@@ -94,6 +91,7 @@ public class Question2_2 {
 		@Override
 		protected void reduce(Text key, Iterable<StringAndInt> values, Context context) throws IOException, InterruptedException {
 			HashMap<String, Integer> tagsMap = new HashMap<>();
+			long tCount = 0;
 
 			for (StringAndInt value : values) {
 				Integer oCount = tagsMap.get(value.getTag());
@@ -126,7 +124,8 @@ public class Question2_2 {
 	public static class MyCombiner extends Reducer<Text, StringAndInt, Text, StringAndInt> {
 
 		@Override
-		protected void reduce(Text key, Iterable<StringAndInt> values, Context context) throws IOException, InterruptedException {
+		protected void reduce(Text key, Iterable<StringAndInt> values, Context context)
+				throws IOException, InterruptedException {
 			HashMap<String, Integer> tagsMap = new HashMap<>();
 
 			for (StringAndInt value : values) {
@@ -140,20 +139,11 @@ public class Question2_2 {
 				tagsMap.put(value.getTag(), count);
 			}
 
-			Configuration config = context.getConfiguration();
-			final int K = config.getInt("K", K_DEFAULT);
-
-			MinMaxPriorityQueue<StringAndInt> pqueue = MinMaxPriorityQueue.maximumSize(K).create();
-
 			for (Map.Entry<String, Integer> entry : tagsMap.entrySet()) {
 				String tag = entry.getKey();
 				int count = entry.getValue();
 
-				pqueue.add(new StringAndInt(tag, count));
-			}
-
-			for (StringAndInt si : pqueue) {
-				context.write(key, si);
+				context.write(key, new StringAndInt(tag, count));
 			}
 		}
 	}

@@ -6,8 +6,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class StringAndInt implements Comparable<StringAndInt>, Writable {
-//public class StringAndInt implements WritableComparable {
+//public class StringAndInt implements Comparable<StringAndInt>, Writable {
+public class StringAndInt implements WritableComparable {
 
 	private String tag;
 	private int count;
@@ -33,10 +33,10 @@ public class StringAndInt implements Comparable<StringAndInt>, Writable {
 		return tag + " : " + count;
 	}
 
-	@Override
+	/*@Override
 	public int compareTo(StringAndInt o) {
 		return o.count - count;
-	}
+	}*/
 
 	@Override
 	public void write(DataOutput dataOutput) throws IOException {
@@ -55,8 +55,14 @@ public class StringAndInt implements Comparable<StringAndInt>, Writable {
 		count = dataInput.readInt();
 	}
 
-//	@Override
-//	public int compareTo(Object o) {
-//		return 0;
-//	}
+	@Override
+	public int compareTo(Object o) {
+		int ret = 0;
+
+		if (o instanceof StringAndInt) {
+			ret = ((StringAndInt)o).count - count;
+		}
+
+		return ret;
+	}
 }

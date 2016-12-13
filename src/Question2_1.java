@@ -29,7 +29,6 @@ public class Question2_1 {
 		@Override
 		protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
 
-			//System.out.println("map go");
 			double latitude = 0, longitude = 0;
 			String uTags = null, mTags = null;
 			String[] fields = value.toString().split("\\t");

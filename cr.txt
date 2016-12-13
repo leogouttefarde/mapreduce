@@ -1,4 +1,5 @@
 
+
 1.1
 
 1. Que signifie Map input records ? Et Map output records ?
@@ -69,16 +70,13 @@ En Java on utilisera le type Text pour les clés et le type StringAndInt pour le
 
 
 Tags les plus utilisés en France :
-Avec K = 5, une exécution MapReduce sur le fichier /data/flickr.txt donne le résultat suivant pour la France : FR	[france : 563, españa : 54, bretagne : 60, squaredcircle : 63, spain : 104]
-On observe que les tags les plus utilisés en France sont 'france', 'spain', 'squaredcircle', 'bretagne' et 'españa'.
+Avec K = 5, une exécution MapReduce sur le fichier /data/flickr.txt donne le résultat suivant pour la France :
+FR	[france : 563, bretagne : 67, spain : 115, españa : 71, europe : 75]
+On observe que les tags les plus utilisés en France sont 'france', 'spain', 'europe', 'españa' et 'bretagne'.
 
-Question finale :
-Dans le reducer, nous avons une structure en mémoire dont la taille dépend du nombre
-de tags distincts : on ne le connaît pas a priori, et il y en a potentiellement beaucoup. Est-ce un
-problème ?
+Question finale : Dans le reducer, nous avons une structure en mémoire dont la taille dépend du nombre de tags distincts : on ne le connaît pas a priori, et il y en a potentiellement beaucoup. Est-ce un problème ?
 
-Dans le reducer, nous avons une structure en mémoire dont la taille dépend du nombre
-de tags distincts. C'est un problème car dans un contexte de traitement d'un grand nombre de données (big data) par exemple la mémoire sera insuffisante.
+Dans le reducer, nous avons une structure en mémoire dont la taille dépend du nombre de tags distincts. C'est un problème car dans un contexte de traitement d'un grand nombre de données (big data) par exemple la mémoire sera insuffisante.
 Ainsi il faudrait pouvoir utiliser autre chose qu'une simple structure HashMap, afin d'éliminer les tags le moins présents dès que possible.
 
 
@@ -86,5 +84,24 @@ Ainsi il faudrait pouvoir utiliser autre chose qu'une simple structure HashMap, 
 
 3)
 
+Question préliminaire : spécifiez les 2 jobs nécessaires (le second va utiliser le résultat du premier), en précisant le type des clés/valeurs en entrée, sortie et intérmédiaires. Avant de vous lancer dans l'implémentation, validez votre réponse avec l'encadrant.
 
+Premier job :
+Les clés / valeurs en entrée sont respectivement de type LongWritable et Text pour lire le fichier texte d'entrée (comme précédemment).
+Les clés / valeurs intermédiaires sont respectivement de type Text et IntWritable. En effet le type Text permet de stocker la concaténation du pays et du tag concerné comme clé, et le type IntWritable permet de stocker le nombre d'occurrences.
+Les clés / valeurs en sortie sont respectivement de type Text et IntWritable là encore, en effet le reducer va additionner tous les nombres d'occurrence et en calculer la somme pour chaque clé pays/tag. On utilise ce reducer également comme combiner.
+
+
+Second job :
+Les clés / valeurs en entrée sont respectivement de type Text et IntWritable pour lire les valeurs écrites en binaire par le reducer du job 1.
+Les clés / valeurs intermédiaires sont respectivement de type Text et StringAndInt. En effet le type Text permet de stocker le pays comme clé, et le type StringAndInt permet de stocker le tag et son nombre d'occurrences total.
+Les clés / valeurs en sortie sont respectivement de type Text et MinMaxPriorityQueue, en effet pour chaque clé de pays le reducer va utiliser une file de priorité sur les tags pour n'en garder que les K plus populaires.
+Le combiner est içi identique au reduce sauf qu'on écrit chaque tag en sortie, au lieu de la file de priorité.
+
+
+
+Question finale : s'il existe des tags classés ex aequo dans le top-K d'un pays, a-t-on la garantie d'obtenir toujours le même résultat d'une éxécution à l'autre ? Pourquoi ?
+Non, car l'ordre des tags lors de l'étape reduce dépend des différents mappeurs.
+Ainsi on a pas la garantie d'obtenir toujours le même résultat, il faudrait également trier par tag en plus du nombre d'occurrences pour garantir un résultat déterministe. Notre résultat dépend de l'ordre de récupération des éléments depuis les différents mappeurs.
+En revanche, dans les tests en local et sur le cluster hadoop, nous obtenons les mêmes résultats à chaque exécution, certainement en raison de conditions d'exécutions très similaires.
 
