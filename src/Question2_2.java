@@ -184,7 +184,7 @@ public class Question2_2 {
 			}
 		}
 
-		Job job = Job.getInstance(conf, "Question2_1");
+		Job job = Job.getInstance(conf, "Question2_2");
 		job.setJarByClass(Question2_2.class);
 		
 		job.setMapperClass(MyMapper.class);
