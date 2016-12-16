@@ -23,7 +23,6 @@ public class Question1_4 {
 			for (String word : value.toString().split("\\s+")) {
 				context.write(new Text(word), new IntWritable(1));
 			}
-			//System.out.println("mappage de " + value + ", clé : " + key);
 		}
 	}
 

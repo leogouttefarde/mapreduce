@@ -34,7 +34,6 @@ public class Question1_1 {
 			for (IntWritable value : values) {
 				sum += value.get();
 			}
-			//System.out.println("reduce de " + key);
 			context.write(key, new LongWritable(sum));
 		}
 	}
