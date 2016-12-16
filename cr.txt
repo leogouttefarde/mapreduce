@@ -23,7 +23,7 @@ Question : quel est le chemin, dans HDFS, vers votre répertoire personel ?
 
 1.3
 
-Le nombre de "splits" lus sur HDFS est 5. Ce compteur correspond au nombre de de fichiers d'entrée.
+Le nombre de "splits" lus sur HDFS est 5. Ce compteur correspond au nombre de fichiers d'entrée.
 
 
 1.4
@@ -38,7 +38,7 @@ Les valeurs "Combine input records" et "Combine output records" permettent de v�
 De plus on observe que la valeur de "Reduce input records" a bien été réduite avec le combiner.
 
 3)
-La différence entre "Combine input records" et "Combine output records" correspond au nombre de valeurs qu'il a été possible de retirer en les traiant avec le combiner (et donc au gain obtenu).
+La différence entre "Combine input records" et "Combine output records" correspond au nombre de valeurs qu'il a été possible de retirer en les traitant avec le combiner (et donc au gain obtenu).
 En effet on peut facilement vérifier que cette différence est égale à la différence entre les valeurs "Reduce input records" avec et sans combiner.
 
 Sans combiner

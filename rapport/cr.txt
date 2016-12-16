@@ -1,0 +1,1 @@
+/home/leo/Bureau/mapreduce/cr.txt
